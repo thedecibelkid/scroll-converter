@@ -102,7 +102,7 @@ window.scrollConverter = (function (window, document, undefined) {
 					scrollCallback(offset, e, cb);
 
 					// Prevent the normal scroll action to happen
-					if (e.preventDefault && e.stopPropagation) {
+					if (active && e.preventDefault && e.stopPropagation) {
 						e.preventDefault();
 						e.stopPropagation();
 					} else {
@@ -176,6 +176,18 @@ window.scrollConverter = (function (window, document, undefined) {
 
 	// Return a public API
 	return {
+	
+		// temporarily stop grabbing the scroll events
+		// e.g. call on SELECT.focus so you can scroll
+		// inside the dropdown
+		pause: function() {
+			active = false;
+		},
+	
+		// resmue e.g. on SELECT.blur 
+		resume: function() {
+			active = true;
+		},
 
 		// Activate the scrolling switch
 		//  An optional callback can be passed in, which will fire at every scroll update
